@@ -10,18 +10,14 @@ import (
 )
 
 func (db *Database) CreateUser(ctx context.Context, request domain.User) (err error) {
-	request.Id = uuid.New()
+	if request.Id == uuid.Nil {
+		request.Id = uuid.New()
+	}
 	request.CreatedAt = common.CurrentTime()
 	request.DBAesKey = db.Config.DB.DBAesKey
-	result, err := db.NamedExecContext(ctx, constant.INSERT_USER, request)
+	_, err = db.NamedExecContext(ctx, constant.INSERT_USER, request)
 	if err != nil {
 		common.WrapError(err, "sqlx", "ExecContext")
-		return
-	}
-
-	_, err = result.LastInsertId()
-	if err != nil {
-		common.WrapError(err, "sqlx", "LastInsertId")
 		return
 	}
 
@@ -36,16 +32,8 @@ func (db *Database) GetUserById(ctx context.Context, request domain.User) (resul
 		return
 	}
 	rows.Next()
-	err = rows.StructScan(&result)
-	// err = rows.Scan(
-	// 	&result.Id,
-	// 	&result.Name,
-	// 	&result.Email,
-	// 	&result.Password,
-	// 	&result.CreatedAt,
-	// 	&result.UpdatedAt,
-	// )
-	if err != nil {
+	
+	if err = rows.StructScan(&result); err != nil {
 		common.WrapError(err, "sqlx", "Scan")
 		return
 	}

@@ -9,7 +9,7 @@ import (
 	"go-architecture/usecase"
 	"os"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql" // match with your database
 	"github.com/gofiber/fiber/v2"
 	"github.com/jmoiron/sqlx"
 	log "github.com/sirupsen/logrus"
@@ -23,7 +23,7 @@ func initRestAPI(cfg *config.ShareConfig) {
 		cfg.DB.Host,
 		cfg.DB.Port,
 		cfg.DB.DBName)
-	db, err := sqlx.Connect("mysql", dbSourceName)
+	db, err := sqlx.Connect("mysql", dbSourceName) // match your DSN database
 	if err != nil {
 		log.Error(err)
 		os.Exit(1)
@@ -41,7 +41,7 @@ func initRestAPI(cfg *config.ShareConfig) {
 
 }
 
-func initConfig() *config.ShareConfig {
+func InitConfig() *config.ShareConfig {
 	cfg := config.Config{}
 	path, err := os.Getwd()
 	if err != nil {
@@ -75,7 +75,7 @@ func initConfig() *config.ShareConfig {
 }
 
 func main() {
-	cfg := initConfig()
+	cfg := InitConfig()
 
 	config.InitLog()
 	initRestAPI(cfg)

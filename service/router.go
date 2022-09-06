@@ -4,7 +4,6 @@ import "github.com/gofiber/fiber/v2"
 
 func (handler *HttpHandler) Router(app *fiber.App) {
 	// user
-	user := app.Group("/user")
-	user.Post("/register", handler.Register)
-	user.Get("/:id", handler.GetUserByEmail)
+	app.Post("user/register", handler.Register)
+	app.Get("user/:id", handler.GetUserById)
 }

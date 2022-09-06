@@ -32,11 +32,19 @@ func (handler *HttpHandler) Register(ctx *fiber.Ctx) error {
 	})
 }
 
-func (handler *HttpHandler) GetUserByEmail(ctx *fiber.Ctx) error {
+func (handler *HttpHandler) GetUserById(ctx *fiber.Ctx) error {
 	id := ctx.Params("id")
-	request := domain.User{
-		Id: uuid.MustParse(id),
+	reqUUID, err := uuid.Parse(id)
+	if err != nil {
+		return ctx.Status(500).JSON(helper.BaseApiResponse{
+			Status:  500,
+			Message: helper.BadRequestMessage,
+		})
 	}
+	request := domain.User{
+		Id: reqUUID,
+	}
+
 	result, err := handler.Usecase.GetUserById(ctx.Context(), request)
 	if err != nil {
 		return ctx.Status(500).JSON(helper.BaseApiResponse{
