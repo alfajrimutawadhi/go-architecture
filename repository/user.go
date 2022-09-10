@@ -9,13 +9,13 @@ import (
 	"github.com/google/uuid"
 )
 
-func (db *Database) CreateUser(ctx context.Context, request domain.User) (err error) {
+func (repo *Repository) CreateUser(ctx context.Context, request domain.User) (err error) {
 	if request.Id == uuid.Nil {
 		request.Id = uuid.New()
 	}
 	request.CreatedAt = common.CurrentTime()
-	request.DBAesKey = db.Config.DB.DBAesKey
-	_, err = db.NamedExecContext(ctx, constant.INSERT_USER, request)
+	request.DBAesKey = repo.Config.DB.DBAesKey
+	_, err = repo.DB.NamedExecContext(ctx, constant.INSERT_USER, request)
 	if err != nil {
 		common.WrapError(err, "sqlx", "ExecContext")
 		return
@@ -24,9 +24,9 @@ func (db *Database) CreateUser(ctx context.Context, request domain.User) (err er
 	return
 }
 
-func (db *Database) GetUserById(ctx context.Context, request domain.User) (result domain.User, err error) {
-	request.DBAesKey = db.Config.DB.DBAesKey
-	rows, err := db.NamedQueryContext(ctx, constant.SELECT_USER_BY_ID, request)
+func (repo *Repository) GetUserById(ctx context.Context, request domain.User) (result domain.User, err error) {
+	request.DBAesKey = repo.Config.DB.DBAesKey
+	rows, err := repo.DB.NamedQueryContext(ctx, constant.SELECT_USER_BY_ID, request)
 	if err != nil {
 		common.WrapError(err, "sqlx", "NamedQueryContext")
 		return

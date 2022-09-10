@@ -7,13 +7,13 @@ import (
 	"go-architecture/repository"
 )
 
-type Repository struct {
+type Usecase struct {
 	RespositoryInteractor repository.RespositoryInteractor
 	Config                *config.ShareConfig
 }
 
 func NewUsecase(repo repository.RespositoryInteractor, config config.ShareConfig) UsecaseInteractor {
-	return &Repository{
+	return &Usecase{
 		RespositoryInteractor: repo,
 		Config: &config,
 	}

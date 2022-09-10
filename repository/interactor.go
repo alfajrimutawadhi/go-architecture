@@ -8,15 +8,15 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-type Database struct {
-	*sqlx.DB
+type Repository struct {
+	DB *sqlx.DB
 	Config *config.ShareConfig
 }
 
 func NewRepository(db *sqlx.DB, config config.ShareConfig) RespositoryInteractor {
-	return &Database{
-		db,
-		&config,
+	return &Repository{
+		DB :db,
+		Config: &config,
 	}
 }
 

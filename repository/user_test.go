@@ -2,13 +2,11 @@ package repository_test
 
 import (
 	"context"
-	"database/sql/driver"
 	"errors"
 	"go-architecture/config"
 	"go-architecture/domain"
 	"go-architecture/repository"
 	"testing"
-	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/google/uuid"
@@ -16,17 +14,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type AnyTime struct{}
-
-// Match satisfies sqlmock.Argument interface
-func (a AnyTime) Match(v driver.Value) bool {
-	_, ok := v.(time.Time)
-	return ok
-}
-
-var mockErr = errors.New("error")
-
 func Test_CreateUser(t *testing.T) {
+	var mockErr = errors.New("error")
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
@@ -77,7 +66,7 @@ func Test_CreateUser(t *testing.T) {
 				err: false,
 			},
 			patch: func() {
-				mock.ExpectExec("INSERT").WithArgs(mockId, "test", "test@gmail.com", "test", "", AnyTime{}).WillReturnResult(sqlmock.NewResult(1, 1))
+				mock.ExpectExec("INSERT").WillReturnResult(sqlmock.NewResult(1, 1))
 			},
 		},
 	}
@@ -96,12 +85,12 @@ func Test_CreateUser(t *testing.T) {
 }
 
 func Test_GetUserById(t *testing.T) {
+	var mockErr = errors.New("error")
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
 	defer db.Close()
-	
 
 	type request struct {
 		ctx context.Context
