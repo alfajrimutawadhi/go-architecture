@@ -62,11 +62,13 @@ func InitConfig() *config.ShareConfig {
 	var shareConfig config.ShareConfig
 	if cfg.Environment == "development" {
 		shareConfig = config.ShareConfig{
-			DB: cfg.DB.Development,
+			DB:          cfg.DB.Development,
+			Environment: cfg.Environment,
 		}
 	} else {
 		shareConfig = config.ShareConfig{
-			DB: cfg.DB.Production,
+			DB:          cfg.DB.Production,
+			Environment: cfg.Environment,
 		}
 	}
 
@@ -77,6 +79,6 @@ func InitConfig() *config.ShareConfig {
 func main() {
 	cfg := InitConfig()
 
-	config.InitLog()
+	config.InitLog(cfg)
 	initRestAPI(cfg)
 }

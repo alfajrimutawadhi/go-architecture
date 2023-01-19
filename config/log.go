@@ -4,12 +4,11 @@ import (
 	"os"
 
 	log "github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
 )
 
-func InitLog() {
+func InitLog(c *ShareConfig) {
 	log.SetOutput(os.Stdout)
-	if viper.GetString("environment") == "development" {
+	if c.Environment == "development" {
 		log.SetLevel(log.InfoLevel)
 	} else {
 		log.SetLevel(log.WarnLevel)

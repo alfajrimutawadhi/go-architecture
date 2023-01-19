@@ -6,7 +6,8 @@ type Config struct {
 }
 
 type ShareConfig struct {
-	DB DBConfig
+	DB          DBConfig
+	Environment string
 }
 
 type Database struct {
