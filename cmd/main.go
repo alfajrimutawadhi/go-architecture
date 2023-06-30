@@ -60,15 +60,15 @@ func InitConfig() *config.ShareConfig {
 	}
 
 	var shareConfig config.ShareConfig
-	if cfg.Environment == "development" {
+	if os.Getenv("ENV") != "production" {
 		shareConfig = config.ShareConfig{
 			DB:          cfg.DB.Development,
-			Environment: cfg.Environment,
+			Environment: "development",
 		}
 	} else {
 		shareConfig = config.ShareConfig{
 			DB:          cfg.DB.Production,
-			Environment: cfg.Environment,
+			Environment: "production",
 		}
 	}
 

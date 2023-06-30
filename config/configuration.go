@@ -2,7 +2,6 @@ package config
 
 type Config struct {
 	DB          Database `json:"database"`
-	Environment string   `json:"environment"`
 }
 
 type ShareConfig struct {
