@@ -12,7 +12,7 @@ type Error struct {
 	Args string
 }
 
-func WrapError(err error, flag string, args ...string) {
+func WrapError(err error, flag string, args ...string) error {
 	e := Error{
 		Flag: strings.ToUpper(flag),
 		Err:  err,
@@ -22,4 +22,5 @@ func WrapError(err error, flag string, args ...string) {
 	}
 
 	log.Errorf("[%s] - %s : %v", e.Flag, e.Args, e.Err)
+	return err
 }

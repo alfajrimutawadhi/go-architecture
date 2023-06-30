@@ -17,8 +17,7 @@ func (repo *Repository) CreateUser(ctx context.Context, request domain.User) (er
 	request.DBAesKey = repo.Config.DB.DBAesKey
 	_, err = repo.DB.NamedExecContext(ctx, constant.INSERT_USER, request)
 	if err != nil {
-		common.WrapError(err, "sqlx", "ExecContext")
-		return
+		return common.WrapError(err, "sqlx", "ExecContext")
 	}
 
 	return
@@ -28,14 +27,12 @@ func (repo *Repository) GetUserById(ctx context.Context, request domain.User) (r
 	request.DBAesKey = repo.Config.DB.DBAesKey
 	rows, err := repo.DB.NamedQueryContext(ctx, constant.SELECT_USER_BY_ID, request)
 	if err != nil {
-		common.WrapError(err, "sqlx", "NamedQueryContext")
-		return
+		return domain.User{}, common.WrapError(err, "sqlx", "NamedQueryContext")
 	}
 	rows.Next()
-	
+
 	if err = rows.StructScan(&result); err != nil {
-		common.WrapError(err, "sqlx", "Scan")
-		return
+		return domain.User{}, common.WrapError(err, "sqlx", "Scan")
 	}
 	return
 }
