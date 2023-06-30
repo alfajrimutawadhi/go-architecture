@@ -19,7 +19,8 @@ func (handler *HttpHandler) Register(ctx *fiber.Ctx) error {
 		})
 	}
 
-	if err := handler.Usecase.CreateUser(ctx.Context(), user); err != nil {
+	id, err := handler.Usecase.CreateUser(ctx.Context(), user)
+	if err != nil {
 		return ctx.Status(500).JSON(helper.BaseApiResponse{
 			Status:  500,
 			Message: helper.InternalServerErrorMessage,
@@ -29,6 +30,7 @@ func (handler *HttpHandler) Register(ctx *fiber.Ctx) error {
 	return ctx.Status(200).JSON(helper.BaseApiResponse{
 		Status:  200,
 		Message: "Success create user",
+		Data:    id,
 	})
 }
 

@@ -5,6 +5,7 @@ import (
 	"go-architecture/config"
 	"go-architecture/domain"
 
+	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -21,6 +22,6 @@ func NewRepository(db *sqlx.DB, config config.ShareConfig) RespositoryInteractor
 }
 
 type RespositoryInteractor interface {
-	CreateUser(ctx context.Context, request domain.User) (err error)
+	CreateUser(ctx context.Context, request domain.User) (id uuid.UUID, err error)
 	GetUserById(ctx context.Context, request domain.User) (result domain.User, err error)
 }

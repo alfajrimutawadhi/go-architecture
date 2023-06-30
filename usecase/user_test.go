@@ -62,7 +62,7 @@ func Test_CreateUser(t *testing.T) {
 		usecase := usecase.NewUsecase(m, config.ShareConfig{})
 		t.Run(tt.name, func(t *testing.T) {
 			tt.patch()
-			err := usecase.CreateUser(tt.args.ctx, tt.args.request)
+			_, err := usecase.CreateUser(tt.args.ctx, tt.args.request)
 			if tt.want.err {
 				assert.Error(t, err)
 			} else {

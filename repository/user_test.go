@@ -74,7 +74,7 @@ func Test_CreateUser(t *testing.T) {
 		repo := repository.NewRepository(sqlx.NewDb(db, "sqlmock"), config.ShareConfig{})
 		t.Run(tt.name, func(t *testing.T) {
 			tt.patch()
-			err = repo.CreateUser(tt.args.ctx, tt.args.req)
+			_, err = repo.CreateUser(tt.args.ctx, tt.args.req)
 			if tt.want.err {
 				assert.Error(t, err)
 			} else {
